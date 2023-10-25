@@ -6,6 +6,7 @@ from kafka import TopicPartition
 import avro_schema
 import function.function as udf
 import config_util as cnf
+import log as log
 
 URL = "url"
 TOPIC = "topic"
@@ -13,10 +14,15 @@ GROUP = "group"
 OFFSET = "offset"
 
 schema = avro_schema.get_avro_schema()
-print("avro schema: ", schema)
 
 # load config
-extractor, sinker, custom = cnf.parse_ini("./config.ini")
+extractor, sinker, custom = cnf.parse_ini("./function/config.ini")
+
+log.init(custom)
+log.log("avro schema: " + str(schema))
+log.log("config, extractor: " + str(extractor))
+log.log("config, sinker: " + str(sinker))
+log.log("config, custom: " + str(custom))
 
 # consumer
 consumer = KafkaConsumer(

@@ -13,10 +13,6 @@ def parse_ini(ini_file):
     extractor = parse_section(config, EXTRACTOR)
     sinker = parse_section(config, SINKER)
     custom = parse_section(config, CUSTOM)
-
-    print("config, extractor: ", extractor)
-    print("config, sinker: ", sinker)
-    print("config, custom: ", custom)
     return extractor, sinker, custom
 
 def parse_section(config, section):
