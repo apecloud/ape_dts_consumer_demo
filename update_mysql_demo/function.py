@@ -1,4 +1,4 @@
-def handle(record):
+def handle(record, config):
     if record["schema"] != "store" or record["tb"] != "book":
         return None
     

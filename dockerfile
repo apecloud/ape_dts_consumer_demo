@@ -4,19 +4,19 @@ FROM --platform=${TARGETPLATFORM:-linux/amd64} python:${PYTHON_VERSION}-alpine
 ARG TARGETPLATFORM
 
 # Add non root user
-RUN addgroup -S app && adduser app -S -G app
+# RUN addgroup -S root && adduser app -S -G root
 
-WORKDIR /home/app/
+WORKDIR /home/root/
 
-COPY entrypoint.sh index.py avro_schema.py config_util.py requirements.txt /home/app/
+COPY entrypoint.sh index.py avro_schema.py config_util.py log.py requirements.txt /home/root/
 
-RUN chown -R app /home/app && \
-  mkdir -p /home/app/python && chown -R app /home/app
+RUN chown -R root /home/root && \
+  mkdir -p /home/root/python && chown -R root /home/root
 
-USER app
-ENV PATH=$PATH:/home/app/.local/bin:/home/app/python/bin/
-ENV PYTHONPATH=$PYTHONPATH:/home/app/python
+USER root
+ENV PATH=$PATH:/home/root/.local/bin:/home/root/python/bin/
+ENV PYTHONPATH=$PYTHONPATH:/home/root/python
 
-RUN pip install -r ./requirements.txt --target=/home/app/python
+RUN pip install -r ./requirements.txt --target=/home/root/python
 
-ENTRYPOINT ["sh", "/home/app/entrypoint.sh"]
+ENTRYPOINT ["sh", "/home/root/entrypoint.sh"]

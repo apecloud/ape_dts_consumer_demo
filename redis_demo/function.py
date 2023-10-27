@@ -2,7 +2,7 @@ import redis
 
 redis_client = redis.Redis(host='localhost', port=6379, db=0, password="123456")
 
-def handle(record):
+def handle(record, config):
     if record["schema"] != "store" or record["tb"] != "book_stock":
         return None
 

@@ -2,7 +2,7 @@ from elasticsearch import Elasticsearch
 
 es_client = Elasticsearch(hosts=['http://localhost:9200'])
 
-def handle(record):
+def handle(record, config):
     if record["schema"] != "store" or record["tb"] != "book":
         return None
     
