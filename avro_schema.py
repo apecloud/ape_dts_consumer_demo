@@ -9,7 +9,12 @@ field_def_schema_json = {
             "type": "string"
         },
         {
-            "name": "type_name",
+            "name": "column_type",
+            "type": "string",
+            "default": "string"
+        },
+        {
+            "name": "avro_type",
             "type": "string",
             "default": "string"
         }
@@ -60,6 +65,17 @@ schema_json = {
         },
         {
             "name": "after",
+            "type": [
+                "null",
+                {
+                    "type": "map",
+                    "values": ["null", "string", "long", "double", "bytes", "boolean"]
+                }
+            ],
+            "default": None
+        },
+        {
+            "name": "extra",
             "type": [
                 "null",
                 {
