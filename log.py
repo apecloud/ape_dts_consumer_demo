@@ -1,8 +1,6 @@
 import logging
 import os
 
-DEFAULT_LOG_DIR = "/home/root/log"
-
 _default_logger = logging.getLogger('default_logger')
 _default_logger.setLevel(logging.DEBUG)
 
@@ -12,8 +10,7 @@ _position_logger.setLevel(logging.DEBUG)
 _commit_logger = logging.getLogger('commit_logger')
 _commit_logger.setLevel(logging.DEBUG)
 
-def init(config):
-    log_dir = get_log_dir(config)
+def init(log_dir):
     os.makedirs(log_dir, exist_ok=True)
 
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
@@ -47,11 +44,6 @@ def log_position(msg):
 
 def log_commit(msg):
     _commit_logger.info(msg)
-
-def get_log_dir(config):
-    if config != None and config.get("log_dir") != None:
-        return config.get("log_dir")
-    return DEFAULT_LOG_DIR
 
 def get_log_file(log_dir, log_type):
     match log_type:

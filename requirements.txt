@@ -1,8 +1,10 @@
 kafka
 kafka-python
 fastavro
+requests
 
 # pip3 install kafka
 # https://github.com/dpkp/kafka-python/issues/2412
 # pip install git+https://github.com/dpkp/kafka-python.git
 # pip3 install fastavro
+# pip3 install requests

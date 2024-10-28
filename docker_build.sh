@@ -1,1 +1,0 @@
-docker build --no-cache -t cubetran_faas_python:latest .
