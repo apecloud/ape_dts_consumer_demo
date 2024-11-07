@@ -15,12 +15,10 @@
 - 3, update configs in kafka_consumer_demo.py.
 - 4, update function/function.py to handle received records.
 ```
-import log
-
-def handle(record, config):
-    log.log("received record: " + str(record))
+def handle(record):
+    print("received record: " + str(record))
 ```
-- 5, if there were any records sent by ape_dts, you may see logs in log/default.log:
+- 5, if there were any records sent by ape_dts, you may see outputs:
 ```
 2024-10-11 18:26:00,822 - INFO - received record: {'schema': 'test_db_1', 'tb': '', 'operation': 'ddl', 'fields': None, 'before': None, 'after': None, 'extra': {'query': 'create table a(id int, value int)', 'ddl_type': 'create_table', 'db_type': 'mysql'}}
 

@@ -1,18 +1,15 @@
 import requests
 import time
-import function.function as udf
-import log as log
+import function as udf
 from io import BytesIO
 import fastavro
 import avro_schema
 
 # configs
-LOG_DIR = "./log"
 URL = "http://127.0.0.1:10231"
 BATCH_SIZE = 2
 
 # init
-log.init(LOG_DIR)
 schema = avro_schema.get_avro_schema()
 
 while True:

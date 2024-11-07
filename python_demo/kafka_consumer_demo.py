@@ -4,17 +4,14 @@ from kafka.consumer import KafkaConsumer
 from kafka.producer import KafkaProducer
 from kafka import TopicPartition
 import avro_schema
-import function.function as udf
-import log as log
+import function as udf
 
 URL = "localhost:9093"
 TOPIC = "test"
 GROUP = "ape_test"
-LOG_DIR = "./log"
 
 # init
 schema = avro_schema.get_avro_schema()
-log.init(LOG_DIR)
 
 # consumer
 consumer = KafkaConsumer(
