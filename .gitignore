@@ -1,5 +1,5 @@
 ## local env settings
-/__pycache__/*
-/function/__pycache__/*
+/python_demo/__pycache__/*
+/python_demo/function/__pycache__/*
 
 /log/*
