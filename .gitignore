@@ -3,3 +3,6 @@
 /python_demo/function/__pycache__/*
 
 /log/*
+/**/pkg/*
+/**/target/*
+/**/Cargo.lock

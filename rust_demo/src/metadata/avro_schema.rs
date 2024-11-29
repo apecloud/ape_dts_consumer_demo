@@ -1,11 +1,9 @@
-package metadata
+use std::collections::HashMap;
 
-import (
-	"fmt"
-)
+use apache_avro::Schema;
+use serde::{Deserialize, Serialize};
 
-// AvroSchema ... the avro schema json for AvroData
-const AvroSchema string = `
+const SCHEMA_STR: &str = r#"
 {
     "type": "record",
     "name": "AvroData",
@@ -126,68 +124,41 @@ const AvroSchema string = `
             }
         }
     ]
-}
-`
+}"#;
 
-// AvroFieldDef ...
-type AvroFieldDef struct {
-	Name       string `avro:"name"`
-	ColumnType string `avro:"column_type,default=string"`
-	AvroType   string `avro:"avro_type,default=string"`
-}
+pub struct AvroConverterSchema {}
 
-// ApeDtsRecord ...
-type ApeDtsRecord struct {
-	Schema    string                 `avro:"schema"`
-	Tb        string                 `avro:"tb"`
-	Operation string                 `avro:"operation"`
-	Fields    []AvroFieldDef         `avro:"fields,omitempty"`
-	Before    map[string]interface{} `avro:"before,omitempty"`
-	After     map[string]interface{} `avro:"after,omitempty"`
-	Extra     map[string]interface{} `avro:"extra,omitempty"`
+impl AvroConverterSchema {
+    pub fn get_avro_schema() -> Schema {
+        Schema::parse_str(SCHEMA_STR).unwrap()
+    }
 }
 
-// AddField ...
-func (o *ApeDtsRecord) AddField(name string, columnType string, avroType string) {
-	o.Fields = append(o.Fields, AvroFieldDef{Name: name, ColumnType: columnType, AvroType: avroType})
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(untagged)]
+pub enum ColValue {
+    None,
+    String(String),
+    Long(i64),
+    Double(f64),
+    Bytes(Vec<u8>),
+    Boolean(bool),
 }
 
-// SetValue ...
-func (o *ApeDtsRecord) SetValue(field string, value interface{}, image string) error {
-	var values map[string]interface{}
-	if image == Before {
-		if o.Before == nil {
-			o.Before = map[string]interface{}{}
-		}
-		values = o.Before
-	} else {
-		if o.After == nil {
-			o.After = map[string]interface{}{}
-		}
-		values = o.After
-	}
+#[derive(Debug, PartialEq, Eq, Clone, Deserialize, Serialize)]
+pub struct AvroFieldDef {
+    pub name: String,
+    pub column_type: String,
+    pub avro_type: String,
+}
 
-	fieldExists := false
-	for i := range o.Fields {
-		if o.Fields[i].Name == field {
-			fieldExists = true
-			break
-		}
-	}
-	if !fieldExists {
-		return fmt.Errorf("field not exists")
-	}
-
-	if value == nil {
-		values[field] = nil
-		return nil
-	}
-
-	switch value.(type) {
-	case string, int64, float64, []byte, bool:
-		values[field] = value
-		return nil
-	default:
-		return fmt.Errorf("value type not supported")
-	}
+#[derive(Debug, Deserialize, Serialize)]
+pub struct ApeDtsRecord {
+    pub schema: String,
+    pub tb: String,
+    pub operation: String,
+    pub fields: Vec<AvroFieldDef>,
+    pub before: HashMap<String, ColValue>,
+    pub after: HashMap<String, ColValue>,
+    pub extra: HashMap<String, ColValue>,
 }
